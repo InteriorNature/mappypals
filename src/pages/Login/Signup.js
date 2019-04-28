@@ -72,8 +72,35 @@ class Login extends Component {
 					
 					console.log(JSON.stringify(this.state));
 
+<<<<<<< HEAD
 					// Clear inputs.
 					this.setState({name: '', email: '', number: '' , password: '', confirmPassword: ''});
+=======
+		const url = 'http://localhost:3001/users/register'
+		axios({
+			url: url,
+			method: 'POST',
+			data: JSON.stringify(this.state),
+			headers: {
+				"Content-Type": "application/json"
+			}
+		})
+			.then(res => {
+				if (res.status === 200 || res.data.redirect) {
+					//Write redirect logic here
+					console.log("Redirect user to login");
+				}
+			})
+			.catch(err => {
+				console.error(err);
+				console.log('Error logging in please try again');
+			});
+		
+		console.log(JSON.stringify(this.state));
+
+		// Clear inputs.
+		this.setState({name: '', email: '', number: '' , password: '', confirmPassword: ''});
+>>>>>>> eb3a8e48b574db006c6d4ed586a8e1c2da6b8533
 	}
 
 	render() {
@@ -116,9 +143,9 @@ class Login extends Component {
 						<input
 							type="password"
 							name="password"
-							onClick={this.toggleHidden.bind(this)}
+							/*onClick={this.toggleHidden.bind(this)}*/
 							onChange={this.handleChange} required
-							onBlur={this.toggleHidden.bind(this)}
+							/*onBlur={this.toggleHidden.bind(this)}*/
 						/>
 					</label>
 					{!this.state.isHidden && <PasswordReqs />}
