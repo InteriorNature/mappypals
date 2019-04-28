@@ -15,7 +15,7 @@ class Login extends Component {
 		  });
 
 	    this.state = {
-			firstname:"",
+			name:"",
 			lastname:"",
 			email: "",
 			number: "",
@@ -50,26 +50,30 @@ class Login extends Component {
 	handleSubmit = event => {
 		event.preventDefault();
         if (this.validateForm()) {
-			const url = 'http://localhost:3001/users/register'
-			axios({
-				url: url,
-				method: 'POST',
-				data: JSON.stringify(this.state),
-				headers: {
-					"Content-Type": "application/json"
-				}
-			}) //TODO: Not getting any response back to redirect
-				.then(res => console.log(res))
-				.catch(err => {
-					console.error(err);
-					console.log('Error logging in please try again');
-				});
-			
-			console.log(JSON.stringify(this.state));
+					const url = 'http://localhost:3001/users/register'
+					axios({
+						url: url,
+						method: 'POST',
+						data: JSON.stringify(this.state),
+						headers: {
+							"Content-Type": "application/json"
+						}
+					})
+						.then(res => {
+							if (res.status === 200 || res.data.redirect) {
+								//Write redirect logic here
+								console.log("Redirect user to login");
+							}
+						})
+						.catch(err => {
+							console.error(err);
+							console.log('Error logging in please try again');
+						});
+					
+					console.log(JSON.stringify(this.state));
 
-			// Clear inputs.
-			this.setState({name: '', email: '', password: '', confirmPassword: ''});
-		}
+					// Clear inputs.
+					this.setState({name: '', email: '', number: '' , password: '', confirmPassword: ''});
 	}
 
 	render() {
@@ -84,6 +88,7 @@ class Login extends Component {
 							type="text" 
 							id="firstname"
 							className="item2"
+							name = "name"
 							onChange={this.handleChange} required 
 							/>
 					</label>
@@ -93,6 +98,7 @@ class Login extends Component {
 							type="text" 
 							id="lastname"
 							className="item4"
+							name = "lastname"
 							onChange={this.handleChange} required 
 							/>
 					</label>
@@ -125,7 +131,7 @@ class Login extends Component {
 						/>
 					</label>
 					<div className="btnContainer">
-						<button type="submit" >Create Account</button>
+						<button type="submit">Create Account</button>
 					</div>
 					<p className = 'u-text-center'>Or connect with: </p>
 					<div className="btnContainer">
