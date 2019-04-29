@@ -71,7 +71,6 @@ class Login extends Component {
 						});
 					
 					console.log(JSON.stringify(this.state));
-
 					// Clear inputs.
 					this.setState({name: '', email: '', number: '' , password: '', confirmPassword: ''});
 					}
