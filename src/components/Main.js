@@ -11,7 +11,8 @@ import ProfileSettings from '../pages/Settings/ProfileSettings/ProfileSettings';
 import SettingsEmailPassword from '../pages/Settings/SettingsEmailPassword/SettingsEmailPassword';
 import FriendsList from '../pages/FriendsList/FriendsList';
 import Page404 from '../pages/Page404/Page404';
-
+import PersonalProfile from '../pages/PersonalProfile/PersonalProfile';
+import InviteFriends from '../pages/InviteFriends/InviteFriends';
 // The Main component renders one of the three provided
 // Routes (provided that one matches). Both the /roster
 // and /schedule routes will match any pathname that starts
@@ -19,9 +20,10 @@ import Page404 from '../pages/Page404/Page404';
 // when the pathname is exactly the string "/"
 const Main = () => (
     <main>
+        <InviteFriends />
         <Switch>
-            {/* https://stackoverflow.com/questions/53007905/react-router-with-react-16-6-suspense-invalid-prop-component-of-type-object/53019873 
-            Used Render instead of component 
+            {/* https://stackoverflow.com/questions/53007905/react-router-with-react-16-6-suspense-invalid-prop-component-of-type-object/53019873
+            Used Render instead of component
             to counter warning if redux connect used on file.  */}
             <Route exact path="/" component={Home} />
             <Route path="/login" render={props => <Login {...props} />} />
@@ -29,7 +31,10 @@ const Main = () => (
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/forgotpassword" component={ForgotPassword} />
-            <Route path="/friendslist" component={FriendsList} />
+            <Route
+                path="/friendslist"
+                component={props => <FriendsList {...props} />}
+            />
             <Route path="/resetpassword/:token" component={ResetPassword} />
             <Route
                 path="/settings/profilesettings"
@@ -39,6 +44,7 @@ const Main = () => (
                 path="/settings/email_&_password"
                 component={SettingsEmailPassword}
             />
+            <Route path="/profile" component={PersonalProfile} />
             <Route component={Page404} />
         </Switch>
     </main>

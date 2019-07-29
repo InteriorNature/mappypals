@@ -1,4 +1,3 @@
-import ky from 'ky';
 
 import { setLocalData } from '../../utils/localStorage';
 import { AUTH_LOGIN_FAIL, AUTH_LOGIN_START, AUTH_LOGIN_SUCCESS } from './types';
@@ -23,23 +22,32 @@ export const authLoginSucceeded = (token, userId) => ({
 });
 
 export const authLogin = (email, password) => {
-    return async dispatch => {
+    return dispatch => {
         dispatch(authLoginStart());
-
-        try {
-            const url = 'http://localhost:3001/users/login';
-            const response = await ky.post(url, { json: { email, password } });
-            const data = await response.json();
-
-            if (data.token && data.userId) {
-                setLocalData(data.token, data.userId);
-                dispatch(authLoginSucceeded(data.token, data.userId));
+        const url = process.env.URL || 'http://localhost:3001/';
+        fetch(`${url}users/login`, {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                email: email,
+                password: password,
+                token: '',
+                userId: '',
+            })
+        })
+        .then(res => {
+            if (res.status === 200) {
+                return res.json()
             } else {
-                // error message here
-                dispatch(authLoginFailed('Something went wrong!'));
-            }
-        } catch (err) {
-            dispatch(authLoginFailed(err.message));
-        }
-    };
+                return dispatch(authLoginFailed(`Error: ${res.statusText}`));
+        }})
+        .then(res => {
+            if (res.token && res.userId) {
+                setLocalData(res.token, res.userId);
+                dispatch(authLoginSucceeded(res.token, res.userId));
+        }})
+        .catch(err => {
+            dispatch(authLoginFailed(`Uncaught Error: ${err.statusText}`))
+        })
+    }
 };
