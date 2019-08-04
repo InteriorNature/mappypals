@@ -52,7 +52,7 @@ export const InviteFriends = () => {
         <Modal show={show}>
             <div className={`${classes.root}`}>
                 <p className={`${classes.title}`}>
-                    Send and invite to multiple friends
+                    Send an invite to multiple friends
                 </p>
                 <div className={classes.form}>
                     <label htmlFor="email" className={classes.label}>
